@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-900: #04342C;
+    --green-800: #085041;
+    --green-700: #0F6E56;
+    --green-500: #1D9E75;
+    --green-300: #5DCAA5;
+    --green-100: #9FE1CB;
+    --green-50:  #E1F5EE;
+    --amber-500: #BA7517;
+    --amber-400: #EF9F27;
+    --amber-100: #FAC775;
+    --teal-500:  #1D9E75;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', serif;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: #060E09;
+    color: #9FE1CB;
+    padding: 0;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* HEADER */
+  .header { border-bottom: 1px solid #0F6E56; padding-bottom: 32px; margin-bottom: 48px; }
+  .header-eyebrow { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #1D9E75; margin-bottom: 12px; }
+  .header h1 { font-family: var(--serif); font-size: 42px; font-weight: 400; color: #E1F5EE; line-height: 1.15; margin-bottom: 8px; }
+  .header h1 em { font-style: italic; color: #5DCAA5; }
+  .header-sub { font-size: 13px; color: #5DCAA5; margin-top: 12px; letter-spacing: .04em; }
+
+  /* STAT ROW */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 56px; background: #0F6E56; border: 1px solid #0F6E56; }
+  .stat-cell { background: #060E09; padding: 20px 18px; }
+  .stat-label { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: #1D9E75; margin-bottom: 6px; }
+  .stat-value { font-family: var(--serif); font-size: 28px; color: #E1F5EE; font-weight: 600; }
+  .stat-note { font-size: 10px; color: #5DCAA5; margin-top: 4px; }
+
+  /* SECTION */
+  .section { margin-bottom: 56px; }
+  .section-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #1D9E75; border-left: 2px solid #1D9E75; padding-left: 10px; margin-bottom: 20px; }
+  .section h2 { font-family: var(--serif); font-size: 26px; font-weight: 400; color: #E1F5EE; margin-bottom: 16px; }
+  .section p { font-size: 13px; color: #9FE1CB; line-height: 1.8; margin-bottom: 12px; }
+  .section p strong { color: #E1F5EE; font-weight: 500; }
+
+  /* USE CASE GRID */
+  .use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #0F6E56; border: 1px solid #0F6E56; margin-top: 20px; }
+  .use-cell { background: #060E09; padding: 20px 20px 22px; }
+  .use-num { font-size: 10px; color: #1D9E75; letter-spacing: .1em; margin-bottom: 8px; }
+  .use-title { font-size: 14px; color: #E1F5EE; font-weight: 500; margin-bottom: 8px; font-family: var(--serif); font-style: italic; }
+  .use-body { font-size: 12px; color: #5DCAA5; line-height: 1.7; }
+
+  /* BOM TABLE */
+  .bom-section { margin-bottom: 40px; }
+  .bom-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .bom-tag { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; padding: 3px 10px; border: 1px solid #1D9E75; color: #1D9E75; }
+  .bom-title { font-size: 14px; color: #E1F5EE; }
+  .bom-cost { font-size: 12px; color: #5DCAA5; margin-left: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead tr { border-bottom: 1px solid #0F6E56; }
+  th { text-align: left; padding: 7px 12px; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #1D9E75; font-weight: 400; }
+  td { padding: 9px 12px; border-bottom: 1px solid #0B1A10; color: #9FE1CB; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .td-name { color: #E1F5EE; }
+  .td-cost { color: #5DCAA5; white-space: nowrap; }
+  .td-star { color: #EF9F27; }
+  .td-hl { background: #0B1A10; }
+  .td-total { color: #E1F5EE; font-weight: 500; }
+
+  /* WIRELESS */
+  .radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #0F6E56; border: 1px solid #0F6E56; margin-top: 16px; }
+  .radio-cell { background: #060E09; padding: 18px 20px; }
+  .radio-tag { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: #EF9F27; margin-bottom: 6px; }
+  .radio-name { font-size: 14px; color: #E1F5EE; margin-bottom: 6px; }
+  .radio-detail { font-size: 11px; color: #5DCAA5; line-height: 1.7; }
+
+  /* ROADMAP */
+  .roadmap { margin-top: 20px; }
+  .rm-row { display: grid; grid-template-columns: 100px 1fr; gap: 0; border-bottom: 1px solid #0B1A10; }
+  .rm-row:first-child { border-top: 1px solid #0F6E56; }
+  .rm-q { padding: 14px 16px; font-size: 11px; color: #1D9E75; font-weight: 500; border-right: 1px solid #0B1A10; display: flex; align-items: flex-start; }
+  .rm-content { padding: 14px 16px; font-size: 12px; color: #9FE1CB; }
+  .rm-content strong { color: #E1F5EE; }
+
+  /* SUMMARY BOX */
+  .summary { border: 1px solid #1D9E75; padding: 24px 28px; margin-top: 32px; background: #060E09; }
+  .summary-label { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: #1D9E75; margin-bottom: 14px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .summary-item { }
+  .summary-item-label { font-size: 10px; color: #5DCAA5; margin-bottom: 4px; }
+  .summary-item-value { font-family: var(--serif); font-size: 22px; color: #E1F5EE; }
+  .summary-item-sub { font-size: 10px; color: #1D9E75; margin-top: 2px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid #0B1A10; margin: 40px 0; }
+
+  /* CALLOUT */
+  .callout { background: #0B1A10; border-left: 2px solid #1D9E75; padding: 14px 18px; margin-top: 20px; font-size: 12px; color: #5DCAA5; line-height: 1.7; }
+  .callout strong { color: #E1F5EE; }
+
+  .highlight { color: #EF9F27; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">Mālama Labs · Genesis Program · April 2026</div>
+    <h1>Genesis 200<br><em>Manufacturing Brief</em></h1>
+    <div class="header-sub">Confidential · For manufacturing & industrial design partners</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row">
+    <div class="stat-cell">
+      <div class="stat-label">Unit run</div>
+      <div class="stat-value">200</div>
+      <div class="stat-note">Genesis batch · fixed</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Hardware COGS</div>
+      <div class="stat-value">~$380</div>
+      <div class="stat-note">Target at 200 units</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Sell price</div>
+      <div class="stat-value">$2,000</div>
+      <div class="stat-note">$380 hw + $1,620 license</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Ship target</div>
+      <div class="stat-value">Q3 '26</div>
+      <div class="stat-note">Sun Valley Summit · June</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: WHAT IS MALAMA -->
+  <div class="section">
+    <div class="section-label">01 · Company</div>
+    <h2>What Mālama Labs builds</h2>
+    <p>Mālama Labs is a <strong>verified environmental data company</strong>. We manufacture sensor hardware that signs every reading cryptographically at the device level, then anchors that proof permanently to a public blockchain. The result: a tamper-evident, continuous record of what happened in the physical world — tied to GPS coordinates, UTC timestamps, and a unique hardware identity that cannot be spoofed in software.</p>
+    <p>The climate credit market has a 30-year data integrity problem. Carbon offsets worth hundreds of billions of dollars are routinely verified by an auditor visiting a site once a year. We replace that with <strong>continuous, hardware-attested, on-chain proof</strong>. The device is the product. Everything else — the token, the credit instrument, the compliance disclosure — is an output of the device doing its job correctly.</p>
+    <p>The core trust mechanism sits in a single $1.25 chip: the ATECC608B secure element, which generates and stores an ECDSA P-256 private key at manufacture and signs every sensor reading before it leaves the device. That signature is verifiable by anyone, anywhere, forever.</p>
+  </div>
+
+  <!-- SECTION 2: DEPIN -->
+  <div class="section">
+    <div class="section-label">02 · Network model</div>
+    <h2>What DePIN means for this hardware</h2>
+    <p>DePIN — Decentralized Physical Infrastructure Network — is the model used by Helium (wireless), Hivemapper (mapping), and DIMO (vehicle data). The hardware manufacturer designs and ships the device. Operators buy and deploy it at their own cost. The network pays operators in a native token for verified uptime and data contribution.</p>
+    <p>Mālama's network token is <strong>MLMA</strong> (1 billion fixed supply, Cardano-native). Each Genesis 200 operator receives 125,000 MLMA with their node — 25% at mainnet launch, 75% vesting linearly over 12 months. The network grows because operators are economically incentivized to grow it.</p>
+    <p>The critical difference from Helium: <strong>our nodes produce data with direct regulatory and market value</strong>. Every signed reading is potential evidence toward a carbon credit, a compliance disclosure, or a climate prediction market settlement. The data is not coverage for coverage's sake. It is scientific record with a monetary output.</p>
+
+    <div class="use-grid">
+      <div class="use-cell">
+        <div class="use-num">USE · 01</div>
+        <div class="use-title">Proof of life / network bootstrap</div>
+        <div class="use-body">200 deployed nodes across diverse climate zones establishes that the network is real, the hardware works, and the on-chain record is accumulating. Every SaveCard minted is a verifiable proof of physical operation. This is the foundation all future commercial activity sits on.</div>
+      </div>
+      <div class="use-cell">
+        <div class="use-num">USE · 02</div>
+        <div class="use-title">Early infrastructure support</div>
+        <div class="use-body">Genesis nodes provide the baseline environmental data layer — soil moisture, atmospheric conditions, GPS-stamped readings — that subsequent professional sensor SKUs (ERW, Biochar, DAC) build on. Upgrading a hex zone to commercial instrumentation is a hardware swap, not an architecture change.</div>
+      </div>
+      <div class="use-cell">
+        <div class="use-num">USE · 03</div>
+        <div class="use-title">Prediction market settlement</div>
+        <div class="use-body">Climate prediction markets on Kalshi and Polymarket require trusted data resolution. A network of 200 hardware-signed nodes producing continuous soil and atmospheric readings provides oracle-grade inputs for contracts on drought indices, soil moisture anomalies, and precipitation events — data sources that cannot be gamed because they originate in hardware.</div>
+      </div>
+      <div class="use-cell">
+        <div class="use-num">USE · 04</div>
+        <div class="use-title">Anti-spoofing AI integration</div>
+        <div class="use-body">Non-oraclized data sources — satellite imagery, weather APIs, remote sensing — can be correlated against hardware-signed ground-truth readings to detect anomalies and flag potential spoofing or sensor drift. The Genesis network becomes the calibration layer for AI-driven environmental monitoring, project planning, and verification workflows.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: HARDWARE BOM -->
+  <div class="section">
+    <div class="section-label">03 · Hardware specification</div>
+    <h2>Genesis 300 · Full bill of materials</h2>
+    <p>Three-module stack: <strong>Gateway Box</strong> (compute + signing + comms + power), <strong>Soil Pod</strong>, and <strong>Atmospheric Pod</strong>. Solar-powered, dual-radio, field-hardened. Every reading is GPS-timestamped, ECDSA-signed, and transmitted to the Mālama Cloud pipeline for Cardano anchoring.</p>
+
+    <!-- GATEWAY -->
+    <div class="bom-section">
+      <div class="bom-header">
+        <div class="bom-tag">Module 01</div>
+        <div class="bom-title">Gateway Box — compute · signing · connectivity · power</div>
+        <div class="bom-cost">~$245 BOM</div>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:28%">Component</th>
+          <th style="width:12%">Unit cost</th>
+          <th style="width:12%">200-unit est.</th>
+          <th>Role &amp; specification</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="td-name">Raspberry Pi Zero 2W</td>
+            <td class="td-cost">$15.00</td>
+            <td class="td-cost">$13.50</td>
+            <td>Edge compute. Quad-core ARM Cortex-A53 64-bit, 512 MB LPDDR2, WiFi/BT. Headless Raspberry Pi OS Lite. Main daemon process (Python 3.11, systemd).</td>
+          </tr>
+          <tr>
+            <td class="td-name td-star">ATECC608B secure element ★</td>
+            <td class="td-cost">$1.25</td>
+            <td class="td-cost">$1.00</td>
+            <td>Cryptographic trust root. ECDSA P-256 signing. Private key generated on-chip, never exported. Signs every sensor reading before transmission. The $1.25 chip that makes the data commercially valuable.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Waveshare SIM7600G-H LTE HAT</td>
+            <td class="td-cost">$45.00</td>
+            <td class="td-cost">$38.00</td>
+            <td>Primary cellular uplink. LTE Cat-4, global bands, onboard GNSS, 40-pin GPIO. Configured as wwan0 via ModemManager + NetworkManager.</td>
+          </tr>
+          <tr>
+            <td class="td-name">RAK4631 WisBlock Core + RAK19007 Base</td>
+            <td class="td-cost">$35.00</td>
+            <td class="td-cost">$29.00</td>
+            <td>LoRaWAN fallback radio. SX1262 transceiver + nRF52840. 915 MHz, 3–15 km LOS range. Activates when LTE signal below threshold. Dual-radio architecture — no coverage gap on remote agricultural sites.</td>
+          </tr>
+          <tr>
+            <td class="td-name">UPS HAT w/ Solar MPPT</td>
+            <td class="td-cost">$23.00</td>
+            <td class="td-cost">$20.00</td>
+            <td>Power management. 5–24V solar input, I2C fuel gauge, regulated 5V output. Manages charge/discharge cycle autonomously.</td>
+          </tr>
+          <tr>
+            <td class="td-name">LiFePO4 18650 battery, 6,000 mAh 2S2P</td>
+            <td class="td-cost">$18.00</td>
+            <td class="td-cost">$15.00</td>
+            <td>Energy storage. 3.2V chemistry, cycle-stable to −20°C. Sized for 72+ hour standby at 15-minute polling cadence.</td>
+          </tr>
+          <tr>
+            <td class="td-name">20W monocrystalline solar panel</td>
+            <td class="td-cost">$22.00</td>
+            <td class="td-cost">$18.00</td>
+            <td>Primary power. 18V Voc, IP65, 420×270 mm. 20W specified (not 10W) for northern-latitude winter reliability — Idaho deployments are above 40°N.</td>
+          </tr>
+          <tr>
+            <td class="td-name">u-blox ZED-F9T GNSS module</td>
+            <td class="td-cost">$45.00</td>
+            <td class="td-cost">$38.00</td>
+            <td>GPS + UTC timing. Sub-nanosecond accuracy. Stamps every reading with coordinates and timestamp before ATECC608B signing. Spoofing-resistant hardware timing source.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Samsung PRO Endurance microSD, 32 GB</td>
+            <td class="td-cost">$9.00</td>
+            <td class="td-cost">$7.50</td>
+            <td>Local storage. Endurance-grade A1. SQLite ring buffer — 7-day offline queue, auto-sync on reconnect.</td>
+          </tr>
+          <tr>
+            <td class="td-name">NEMA 4X polycarbonate enclosure</td>
+            <td class="td-cost">$18.00</td>
+            <td class="td-cost">$14.00</td>
+            <td>IP67, 200×150×75 mm, clear lid, foam gasket, DIN rail plate. Polycase WC-17 or equivalent. <span class="highlight">Form factor is an open design problem — primary ID engagement point.</span></td>
+          </tr>
+          <tr>
+            <td class="td-name">LTE antenna (5 dBi SMA pigtail)</td>
+            <td class="td-cost">$7.00</td>
+            <td class="td-cost">$6.00</td>
+            <td>External LTE. SMA-male to U.FL, 15 cm. Mounted external to enclosure via SMA bulkhead.</td>
+          </tr>
+          <tr>
+            <td class="td-name">LoRa antenna (3 dBi fiberglass, 915 MHz)</td>
+            <td class="td-cost">$8.00</td>
+            <td class="td-cost">$6.50</td>
+            <td>External LoRa. SMA. External mount. Fiberglass sleeve for outdoor UV resistance.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Gore vent plug M12</td>
+            <td class="td-cost">$3.50</td>
+            <td class="td-cost">$3.00</td>
+            <td>Pressure equalization. IP68. Prevents condensation accumulation inside sealed enclosure.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Cable glands M16 (qty 4)</td>
+            <td class="td-cost">$4.00</td>
+            <td class="td-cost">$3.50</td>
+            <td>IP68 nylon. Entry points for sensor cables and solar lead. 4 glands per unit.</td>
+          </tr>
+          <tr>
+            <td class="td-name">SIM — Hologram.io / Twilio Super SIM</td>
+            <td class="td-cost">$5.00 + $4/mo</td>
+            <td class="td-cost">$5.00 + $4/mo</td>
+            <td>Global LTE-M / NB-IoT. ~5 MB/mo per node at 15-min polling cadence. One-time activation + recurring data plan.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Ancillary (standoffs, cable, desiccant, heatshrink)</td>
+            <td class="td-cost">$12.00</td>
+            <td class="td-cost">$10.00</td>
+            <td>M2.5 brass standoffs, USB-C cable, 5g silica gel pack, UV-stabilized heatshrink assortment.</td>
+          </tr>
+          <tr class="td-hl">
+            <td class="td-total">Gateway subtotal</td>
+            <td class="td-cost td-total">~$270</td>
+            <td class="td-cost td-total">~$230</td>
+            <td style="color:#5DCAA5">Retail single unit / estimated 200-unit bulk pricing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SOIL POD -->
+    <div class="bom-section">
+      <div class="bom-header">
+        <div class="bom-tag">Module 02</div>
+        <div class="bom-title">Soil Pod — in-ground sensing</div>
+        <div class="bom-cost">~$60 BOM</div>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:28%">Component</th>
+          <th style="width:12%">Unit cost</th>
+          <th style="width:12%">200-unit est.</th>
+          <th>Role &amp; specification</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="td-name">RS485 7-in-1 soil sensor</td>
+            <td class="td-cost">$40–$55</td>
+            <td class="td-cost">$35–$45</td>
+            <td>Measures: moisture (%), temperature (°C), pH, EC (mS/cm), N/P/K (mg/kg). Modbus RTU protocol. IP68 stainless probes. 5-pin XH connector. ALOUTSNOC / YCCMSM13 class.</td>
+          </tr>
+          <tr>
+            <td class="td-name">MAX485 TTL-RS485 module</td>
+            <td class="td-cost">$1.00</td>
+            <td class="td-cost">$0.80</td>
+            <td>Half-duplex, 3.3V compatible. UART ↔ RS485 on RPi GPIO pins 14/15.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Shielded 3-wire cable, 3m, 22 AWG</td>
+            <td class="td-cost">$5.00</td>
+            <td class="td-cost">$4.00</td>
+            <td>Drain wire, outdoor rated, UV-stabilized jacket. Connects probe to gateway.</td>
+          </tr>
+          <tr>
+            <td class="td-name">XH 5-pin connector pair</td>
+            <td class="td-cost">$1.50</td>
+            <td class="td-cost">$1.20</td>
+            <td>Female housing + terminal pins matched to sensor plug standard. Field-replaceable.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Ground anchor stake, stainless 30 cm</td>
+            <td class="td-cost">$3.00</td>
+            <td class="td-cost">$2.50</td>
+            <td>Probe alignment and deployment stability. Field installation without tools.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Heatshrink tubing, assorted</td>
+            <td class="td-cost">$2.00</td>
+            <td class="td-cost">$1.50</td>
+            <td>UV-stabilized. Waterproofing solder joints at probe cable entry.</td>
+          </tr>
+          <tr class="td-hl">
+            <td class="td-total">Soil Pod subtotal</td>
+            <td class="td-cost td-total">~$53–$68</td>
+            <td class="td-cost td-total">~$45–$55</td>
+            <td style="color:#5DCAA5">Retail single / estimated bulk</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ATMOSPHERIC POD -->
+    <div class="bom-section">
+      <div class="bom-header">
+        <div class="bom-tag">Module 03</div>
+        <div class="bom-title">Atmospheric Pod — above-ground sensing</div>
+        <div class="bom-cost">~$26 BOM</div>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:28%">Component</th>
+          <th style="width:12%">Unit cost</th>
+          <th style="width:12%">200-unit est.</th>
+          <th>Role &amp; specification</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="td-name">BME280 breakout, 3.3V</td>
+            <td class="td-cost">$10.00</td>
+            <td class="td-cost">$8.00</td>
+            <td>Temp ±1°C, humidity ±3% RH, pressure ±1 hPa. I2C. Adafruit 2652 or equivalent.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Radiation shield — Stevenson 6-plate</td>
+            <td class="td-cost">$12.00</td>
+            <td class="td-cost">$9.50</td>
+            <td>White ABS, passive airflow, UV-resistant, 80 mm diameter. Prevents solar radiation error on BME280 temperature readings.</td>
+          </tr>
+          <tr>
+            <td class="td-name">Shielded 4-wire I2C cable, 1m, 24 AWG</td>
+            <td class="td-cost">$3.50</td>
+            <td class="td-cost">$2.80</td>
+            <td>SDA / SCL / VCC / GND. Outdoor rated. Connects atmospheric pod to gateway.</td>
+          </tr>
+          <tr>
+            <td class="td-name">XH 4-pin connector pair</td>
+            <td class="td-cost">$1.00</td>
+            <td class="td-cost">$0.80</td>
+            <td>Matched to pod cable standard. Field-removable for probe swap.</td>
+          </tr>
+          <tr class="td-hl">
+            <td class="td-total">Atmos Pod subtotal</td>
+            <td class="td-cost td-total">~$26.50</td>
+            <td class="td-cost td-total">~$21</td>
+            <td style="color:#5DCAA5">Retail single / estimated bulk</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- WIRELESS -->
+    <div class="bom-section">
+      <div class="bom-header">
+        <div class="bom-tag">Comms</div>
+        <div class="bom-title">Wireless transmission architecture</div>
+      </div>
+      <div class="radio-grid">
+        <div class="radio-cell">
+          <div class="radio-tag">Primary · LTE Cat-4</div>
+          <div class="radio-name">SIM7600G-H cellular uplink</div>
+          <div class="radio-detail">
+            Protocol: HTTPS POST → api.malama.io → Cardano anchor pipeline<br>
+            Data rate: ~5 MB/mo per node at 15-min polling<br>
+            Fallback buffer: 7-day SQLite ring buffer, auto-sync on reconnect<br>
+            Coverage: ~85% of Genesis deployment zones<br>
+            SIM: Hologram.io or Twilio Super SIM (global LTE-M/NB-IoT)
+          </div>
+        </div>
+        <div class="radio-cell">
+          <div class="radio-tag">Fallback · LoRaWAN 915 MHz</div>
+          <div class="radio-name">RAK4631 SX1262 mesh radio</div>
+          <div class="radio-detail">
+            Protocol: LoRaWAN → RAK7289CV2 gateway → mTLS → Mālama Cloud<br>
+            Range: 3–15 km line of sight in open terrain<br>
+            Activates: when LTE RSSI below threshold (automatic failover)<br>
+            Coverage: remote agricultural and forested sites<br>
+            Gateway: 1 RAK7289CV2 8-channel gateway per ~10-node cluster
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>End-to-end signing chain:</strong> Sensor reading → ATECC608B ECDSA P-256 signature + ZED-F9T GPS/UTC timestamp → HTTPS or LoRaWAN uplink → Mālama Cloud ingestion → 60-second Merkle root anchored to Cardano. Every record is verifiable on-chain at any future point, by any party, without trusting Mālama as an intermediary.
+      </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="summary">
+      <div class="summary-label">Genesis 200 · Unit cost summary</div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-item-label">Single unit (retail BOM)</div>
+          <div class="summary-item-value">~$350</div>
+          <div class="summary-item-sub">Pre-assembly, retail component pricing</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-label">200-unit target (bulk)</div>
+          <div class="summary-item-value">~$300</div>
+          <div class="summary-item-sub">Estimated with volume purchasing</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-label">All-in with assembly</div>
+          <div class="summary-item-value">~$380</div>
+          <div class="summary-item-sub">Hardware COGS target for Genesis program</div>
+        </div>
+      </div>
+      <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;font-size:11px;color:#5DCAA5;border-top:1px solid #0F6E56;padding-top:16px;">
+        <div>Recurring SIM cost: $4–5/mo per node</div>
+        <div>Annual probe replacement: $35–55/node</div>
+        <div>Assembly labor target: under 30 min/unit</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 4: ROADMAP -->
+  <div class="section">
+    <div class="section-label">04 · Forward roadmap</div>
+    <h2>Professional sensor family — Genesis is the seed</h2>
+    <p>The Genesis 300 establishes the hardware architecture, signing standard, and operator network. Every future professional SKU uses the same <strong>ATECC608B + Cardano anchoring + Mālama Cloud pipeline</strong>. Only the sensor layer changes. An operator upgrading a Genesis hex zone to commercial ERW instrumentation swaps the sensor module — not the trust architecture.</p>
+
+    <div class="roadmap">
+      <div class="rm-row">
+        <div class="rm-q">Now<br>Q2–Q3 '26</div>
+        <div class="rm-content"><strong>Genesis 200 manufacture &amp; ship.</strong> 200 units. Idaho gated cluster (50 nodes, Sun Valley Summit June 2026). Global operator onboarding begins. Node #1 already live; 2,786+ SaveCards on Cardano preprod. Mainnet migration Q2 post-audit.</div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-q">Q4 '26</div>
+        <div class="rm-content"><strong>MWN-ERW-Soil alpha (10 units).</strong> Enhanced rock weathering soil node. Adds TEROS 12/21 volumetric water content sensors, ISE pH probe, porewater lysimeter, ZED-F9T timing. $900 sell / $677 COGS. Idaho City ERW lighthouse site. First MLMA token rewards to operators.</div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-q">Q1 '27</div>
+        <div class="rm-content"><strong>MWN-ERW-Aqueous + MVK Biochar Controller.</strong> Aqueous geochemistry node adds SUNA UV nitrate sensor, DIC probe, water sampler trigger ($1,800 sell / $1,060 COGS). Biochar MVK controller — Type N thermocouple, Vaisala CO₂, Kurz mass flow, ADE9078 power meter — targets 3,000 global kiln operators ($4,500 basic / $14,000 full stack).</div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-q">Q2 '27</div>
+        <div class="rm-content"><strong>MRAA-01 AI compute meter + 500+ Genesis nodes deployed.</strong> 1U rack-mount iPDU: ADE9078 Class 0.5S metering, ATECC608B, IPMI/Redfish, split-core CTs, PT100, i.MX 8M Plus. Per-rack kWh and Scope 2 attestation for data centers. EU AI Act enforcement (August 2026) is the primary commercial catalyst. $1,500 sell / ~$500 COGS.</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:24px">
+      <strong>ID and DFM priorities:</strong> The Genesis 300 prototype is functional and field-deployed. The gaps are manufacturability, enclosure design, and assembly workflow. Specific needs: (1) an enclosure family that works across Genesis prosumer, ERW field research, and Biochar industrial form factors; (2) compute module transition from RPi Zero 2W to CM4 or custom module for scale; (3) DFM pass on probe connectors, cable management, and gasket design; (4) non-technical operator assembly under 30 minutes.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
